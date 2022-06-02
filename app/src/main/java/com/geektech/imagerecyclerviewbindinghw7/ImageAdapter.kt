@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.geektech.imagerecyclerviewbindinghw7.databinding.ItemImageBinding
 
-class ImageAdapter(val data: ArrayList<ImageModel>):
+class ImageAdapter(private val data: ArrayList<ImageModel>) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
 
@@ -26,19 +27,23 @@ class ImageAdapter(val data: ArrayList<ImageModel>):
     }
 
 
-
     override fun getItemCount(): Int {
         return data.size
     }
 
-    inner class ImageViewHolder( private val binding : ItemImageBinding) :
+    inner class ImageViewHolder(private val binding: ItemImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(imageModel: ImageModel) {
             binding.textView.text = imageModel.textTitle
-            binding.parent.
+            Glide.with(binding.imageView).load(imageModel.image).into(binding.imageView)
+
+            imageModel.backColor?.let { itemView.context.getColor(it) }
+                ?.let { binding.parent.setBackgroundColor(it) }
+
+            imageModel.bottomColor?.let { itemView.context.getColor(it) }
+                ?.let { binding.textView.setBackgroundColor(it) }
         }
 
-    }
     }
 }
 
